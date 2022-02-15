@@ -1,7 +1,16 @@
-import React, {useState} from 'react';
+import React, {useContext} from 'react';
+import {SET_SEARCH} from "../states/heroReducer";
+import {HeroesContext} from "../states/HeroesProvider";
 
 const SearchBar = ({ placeholder }) => {
-  const [search, setSearch] = useState('');
+  const [state, dispatch] = useContext(HeroesContext);
+
+  const handleChange = (event) => {
+    dispatch({
+      type: SET_SEARCH,
+      payload: event.target.value,
+    })
+  }
 
   return (
     <>
@@ -10,12 +19,12 @@ const SearchBar = ({ placeholder }) => {
           type="text"
           className="form-control"
           placeholder={placeholder}
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
+          value={state.search}
+          onChange={handleChange}
         />
       </div>
 
-      <div>Vous recherchez : {search}</div>
+      <div>Vous recherchez : {state.search}</div>
     </>
   );
 };
