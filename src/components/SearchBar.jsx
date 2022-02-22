@@ -1,15 +1,13 @@
-import React, {useContext} from 'react';
-import {SET_SEARCH} from "../states/heroReducer";
-import {HeroesContext} from "../states/HeroesProvider";
+import React from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {setSearch} from "../states/heroesSlice";
 
 const SearchBar = ({ placeholder }) => {
-  const [state, dispatch] = useContext(HeroesContext);
+  const heroes = useSelector((store) => store.heroes);
+  const dispatch = useDispatch();
 
   const handleChange = (event) => {
-    dispatch({
-      type: SET_SEARCH,
-      payload: event.target.value,
-    })
+    dispatch(setSearch(event.target.value))
   }
 
   return (
@@ -19,12 +17,12 @@ const SearchBar = ({ placeholder }) => {
           type="text"
           className="form-control"
           placeholder={placeholder}
-          value={state.search}
+          value={heroes.search}
           onChange={handleChange}
         />
       </div>
 
-      <div>Vous recherchez : {state.search}</div>
+      <div>Vous recherchez : {heroes.search}</div>
     </>
   );
 };

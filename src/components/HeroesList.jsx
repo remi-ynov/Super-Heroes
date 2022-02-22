@@ -1,11 +1,10 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import HeroItem from "./HeroItem";
 import {fetchHeroes} from "../api/heroes";
-import {HeroesContext} from "../states/HeroesProvider";
+import {useSelector} from "react-redux";
 
-// TODO: Gérer les erreurs.
 const HeroesList = () => {
-  const [state] = useContext(HeroesContext);
+  const { search } = useSelector((store) => store.heroes);
   const [heroes, setHeroes] = useState([]);
   const [filteredHeroes, setFilteredHeroes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,14 +20,14 @@ const HeroesList = () => {
   }, [])
 
   useEffect(() => {
-    if (state.search.trim().length > 0) {
+    if (search.trim().length > 0) {
       setFilteredHeroes(
-        heroes.filter((hero) => hero.name.toLowerCase().includes(state.search.toLowerCase()))
+        heroes.filter((hero) => hero.name.toLowerCase().includes(search.toLowerCase()))
       )
     } else {
       setFilteredHeroes(heroes);
     }
-  }, [state.search, heroes])
+  }, [search, heroes])
 
   if (loading) {
     return (
