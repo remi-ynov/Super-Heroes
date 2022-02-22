@@ -1,22 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import HeroItem from "./HeroItem";
-import {fetchHeroes} from "../api/heroes";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchHeroes} from "../states/heroesSlice";
 
 const HeroesList = () => {
-  const { search } = useSelector((store) => store.heroes);
-  const [heroes, setHeroes] = useState([]);
+  const { search, heroes, loading, error } = useSelector((store) => store.heroes);
+  const dispatch = useDispatch();
   const [filteredHeroes, setFilteredHeroes] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const getHeroes = async () => {
-    const data = await fetchHeroes();
-    setHeroes(data ?? []);
-    setLoading(false);
-  }
 
   useEffect(() => {
-    getHeroes();
+    dispatch(fetchHeroes());
   }, [])
 
   useEffect(() => {
